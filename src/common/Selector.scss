@@ -82,6 +82,24 @@
                 border-bottom: 0;
             }
         }
+        .data-index {
+            width: 30px;
+            position: fixed;
+            right: 0;
+            top: 44px;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            .index-item {
+                flex: 1;
+                display: block;
+                text-decoration: none;
+                font-size: 10px;
+                color: #1ba9ba;
+                font-style: normal;
+            }
+        }
     }
 }
 
