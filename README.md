@@ -10,3 +10,7 @@
 - 安装classnames帮助管理动态类名className. `npm i classnames --save`
 - hidden类是在在index.css里定义的
 - 需要在Selector.scss里加入 @font-face，清楚查查才能正确显示
+
+## 8-05 城市选择浮层-城市的异步加载
+- 使用useEffect来完成任务
+

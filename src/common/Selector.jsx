@@ -1,12 +1,17 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import './Selector.scss'
 import classnames from 'classnames'
 import PropTypes from 'prop-types'
 
 export default function Selector(props) {
-    const { show, selectedData, isLoading, onBack } = props
+    const { show, selectedData, isLoading, onBack, fetchData } = props
     const [searchKey, setSearchKey] = useState('')
     const key = useMemo(()=> searchKey.trim(), [searchKey])
+
+    useEffect(()=> {
+        if(!show || selectedData || isLoading) return 
+        fetchData()
+    }, [show, selectedData, isLoading, fetchData])
 
     return (
         <div className={classnames('floating-selector', { hidden: !show, })}>
@@ -47,4 +52,5 @@ Selector.propTypes = {
     selectedData: PropTypes.object,
     isLoading: PropTypes.bool.isRequired,
     onBack: PropTypes.func.isRequired,
+    fetchData: PropTypes.func.isRequired,
 }

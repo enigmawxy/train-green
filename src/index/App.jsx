@@ -10,7 +10,8 @@ import Submit from './Submit'
 import { 
     exchangeFromTo, 
     showCitySelector,
-    hideCitySelector } from './actions'
+    hideCitySelector,
+    fetchCityData, } from './actions'
 import { bindActionCreators } from 'redux'
 import Selector from '../common/Selector'
 
@@ -43,7 +44,8 @@ function App(props) {
 
     const cbsCity = useMemo(() => {
         return bindActionCreators({
-            onBack: hideCitySelector
+            onBack: hideCitySelector,
+            fetchData: fetchCityData,
         }, dispatch)
     }, [dispatch])
     
