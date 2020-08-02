@@ -114,6 +114,62 @@ AlphaIndex.propTypes = {
     onClick: PropTypes.func.isRequired
 }
 
+const Suggest = memo(function Suggest(props) {
+    const {
+        searchKey,
+        onSelect,
+    } = props
+    const [result, setResult] = useState([])
+    useEffect(() => {
+        fetch('/rest/search?key=' + encodeURIComponent(searchKey))
+            .then(res => res.json())
+            .then(data => {
+                const { result, searchKey: sKey } = data
+                if (sKey === searchKey) setResult(result)
+            })
+    }, [searchKey])
+
+    return (
+        <div className='suggest'>
+            <ul className='suggest-ul'>
+                {
+                    result.map(item => {
+                        return (
+                            <SuggestItem
+                                key={item.display}
+                                name={item.display}
+                                onClick={onSelect}
+                            />
+                        )
+                    })
+                }
+            </ul>
+        </div>
+    )
+})
+
+Suggest.propTypes = {
+    searchKey: PropTypes.string.isRequired,
+    onSelect: PropTypes.func.isRequired,
+}
+
+const SuggestItem = memo(function SuggestItem(props) {
+    const { name, onClick, } = props
+
+    return (
+        <li
+            className='suggest-li'
+            onClick={() => onClick(name)}>
+            {name}
+        </li>
+    )
+})
+
+SuggestItem.propTypes = {
+    name: PropTypes.string.isRequired,
+    onClick: PropTypes.func.isRequired,
+}
+
 const Selector = memo(function Selector(props) {
     const { show, selectedData, isLoading, onBack, fetchData, onSelect } = props
     const [searchKey, setSearchKey] = useState('')
@@ -173,6 +229,14 @@ const Selector = memo(function Selector(props) {
                     &#xf063;
                 </i>
             </div>
+            {
+                Boolean(key) && (
+                    <Suggest
+                        searchKey={key}
+                        onSelect = {key=>onSelect(key)}
+                    />
+                )
+            }
             {ouputCitySections()}
         </div>
     )
