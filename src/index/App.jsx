@@ -11,7 +11,9 @@ import {
     exchangeFromTo, 
     showCitySelector,
     hideCitySelector,
-    fetchCityData, } from './actions'
+    fetchCityData, 
+    setSelectedCity,} from './actions'
+
 import { bindActionCreators } from 'redux'
 import Selector from '../common/Selector'
 
@@ -46,6 +48,7 @@ function App(props) {
         return bindActionCreators({
             onBack: hideCitySelector,
             fetchData: fetchCityData,
+            onSelect: setSelectedCity,
         }, dispatch)
     }, [dispatch])
     

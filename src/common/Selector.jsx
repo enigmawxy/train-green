@@ -1,18 +1,109 @@
-import React, { useState, useMemo, useEffect } from 'react'
+import React, { useState, useMemo, useEffect, memo } from 'react'
 import './Selector.scss'
 import classnames from 'classnames'
 import PropTypes from 'prop-types'
 
-export default function Selector(props) {
-    const { show, selectedData, isLoading, onBack, fetchData } = props
+const DataItem = memo(function DataItem(props) {
+    const {
+        name,
+        onSelect,
+    } = props
+
+    return (
+        <li
+            className='data-li'
+            onClick={()=> onSelect(name)}
+        >{name}</li>
+    )
+})
+
+DataItem.propTypes = {
+    name: PropTypes.string.isRequired,
+    onSelect: PropTypes.func.isRequired,
+}
+
+const SectionItem = memo(function SectionItem(props) {
+    const {
+        title,
+        cities =[],
+        onSelect,
+    } = props
+
+    return (
+        <ul className='data-ul'>
+          <li className='data-li'>{title}</li>
+          {
+              cities.map(city=> {
+                  return (
+                      <DataItem
+                        key={city.name}
+                        name = {city.name}
+                        onSelect={onSelect}
+                      />
+                  )
+              })
+          }
+        </ul>
+    )
+})
+
+SectionItem.propTypes = {
+    title: PropTypes.string.isRequired,
+    cities: PropTypes.array,
+    onSelect: PropTypes.func.isRequired,
+}
+
+const DataList = memo(function DataList(props) {
+    const { sections, onSelect,} = props
+
+    return (
+        <div className="data-list">
+            <div className='data-cate'>
+                {
+                    sections.map(section=> {
+                        return (
+                            <SectionItem
+                                key = {section.title}
+                                title = {section.title}
+                                cities = {section.citys}
+                                onSelect = {onSelect}
+                            />
+                        )
+                    })
+                }
+            </div>
+        </div>
+    )
+})
+
+DataList.propTypes = {
+    sections: PropTypes.array.isRequired,
+    onSelect: PropTypes.func.isRequired,
+} 
+const Selector = memo(function Selector(props) {
+    const { show, selectedData, isLoading, onBack, fetchData, onSelect } = props
     const [searchKey, setSearchKey] = useState('')
     const key = useMemo(()=> searchKey.trim(), [searchKey])
 
     useEffect(()=> {
+        console.log(selectedData)
         if(!show || selectedData || isLoading) return 
         fetchData()
     }, [show, selectedData, isLoading, fetchData])
 
+    const ouputCitySections = ()=> {
+        if(isLoading) {
+            return <div>Loading</div>
+        } 
+        if(selectedData) {
+            return (
+                <DataList
+                    sections = {selectedData.cityList}
+                    onSelect = {onSelect}
+                />
+            )
+        }
+    }
     return (
         <div className={classnames('floating-selector', { hidden: !show, })}>
             <div className="data-search">
@@ -43,9 +134,10 @@ export default function Selector(props) {
                     &#xf063;
                 </i>
             </div>
+            {ouputCitySections()}
         </div>
     )
-}
+})
 
 Selector.propTypes = {
     show: PropTypes.bool.isRequired,
@@ -53,4 +145,7 @@ Selector.propTypes = {
     isLoading: PropTypes.bool.isRequired,
     onBack: PropTypes.func.isRequired,
     fetchData: PropTypes.func.isRequired,
+    onSelect: PropTypes.func.isRequired,
 }
+
+export default Selector

@@ -56,6 +56,33 @@
             }
         }
     }
+    .data-list {
+        margin-right: 30px;
+        .data-ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            .data-li {
+                display: block;
+                height: 44px;
+                line-height: 44px;
+                padding-left: 25px;
+                border-bottom: 1px solid #e3e6e9;
+                margin-left: 15px;
+            }
+            .data-li:first-child {
+                height: 30px;
+                line-height: 30px;
+                font-size: 12px;
+                background-color: #f2f8fb;
+                padding: 0 15px;
+                margin-left: 0;
+                position: sticky;
+                top: -1px;
+                border-bottom: 0;
+            }
+        }
+    }
 }
 
 @font-face {
