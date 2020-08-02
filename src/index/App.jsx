@@ -7,12 +7,14 @@ import HighSpeed from './HighSpeed'
 import Journey from './Journey'
 import Submit from './Submit'
 
-import { 
-    exchangeFromTo, 
+import {
+    exchangeFromTo,
     showCitySelector,
     hideCitySelector,
-    fetchCityData, 
-    setSelectedCity,} from './actions'
+    fetchCityData,
+    setSelectedCity,
+    showDateSelector,
+} from './actions'
 
 import { bindActionCreators } from 'redux'
 import Selector from '../common/Selector'
@@ -24,18 +26,11 @@ function App(props) {
         cityData,
         isLoadingCityData,
 
-     } = props
+        departDate,
+    } = props
     const onBack = useCallback(() => {
         window.history.back()
     }, [])
-
-    // const doExchangeFromTo = useCallback(() => {
-    //     dispatch(exchangeFromTo())
-    // }, [dispatch])
-
-    // const doShowCitySelector = useCallback((m) => {
-    //     dispatch(showCitySelector(m))
-    // }, [dispatch])
 
     const cbs = useMemo(() => {
         return bindActionCreators({
@@ -51,7 +46,11 @@ function App(props) {
             onSelect: setSelectedCity,
         }, dispatch)
     }, [dispatch])
-    
+
+    const departDateCbs = useMemo(()=>{
+        return bindActionCreators({onClick: showDateSelector}, dispatch)
+    }, [dispatch])
+
     return (
         <div>
             <Header title="火车票" onBack={onBack} />
@@ -60,17 +59,18 @@ function App(props) {
                     from={from}
                     to={to}
                     {...cbs}
-                // exchangeFromTo={doExchangeFromTo}
-                // showCitySelector={doShowCitySelector}
                 />
-                <DepartDate />
+                <DepartDate 
+                    time={departDate}
+                    {...departDateCbs}
+                />
                 <HighSpeed />
                 <Submit />
             </form>
             <Selector
                 show={isCitySelectorVisible}
-                selectedData = {cityData}
-                isLoading = {isLoadingCityData}
+                selectedData={cityData}
+                isLoading={isLoadingCityData}
                 {...cbsCity}
             ></Selector>
         </div>
