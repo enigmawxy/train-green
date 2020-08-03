@@ -14,14 +14,17 @@ import {
     fetchCityData,
     setSelectedCity,
     showDateSelector,
+    hideDateSelector,
 } from './actions'
 
 import { bindActionCreators } from 'redux'
 import Selector from '../common/Selector'
+import DateSelector from '../common/DateSelector'
 
 function App(props) {
     const { from, to, dispatch,
-
+        isDateSelectorVisible,
+        
         isCitySelectorVisible,
         cityData,
         isLoadingCityData,
@@ -51,6 +54,9 @@ function App(props) {
         return bindActionCreators({onClick: showDateSelector}, dispatch)
     }, [dispatch])
 
+    const dateSelectorCBS= useMemo(()=>{
+        return bindActionCreators({onBack: hideDateSelector}, dispatch)
+    }, [dispatch])
     return (
         <div>
             <Header title="火车票" onBack={onBack} />
@@ -73,6 +79,10 @@ function App(props) {
                 isLoading={isLoadingCityData}
                 {...cbsCity}
             ></Selector>
+            <DateSelector 
+                show={isDateSelectorVisible}
+                {...dateSelectorCBS}
+            />
         </div>
     )
 }
