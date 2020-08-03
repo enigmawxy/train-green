@@ -6,6 +6,7 @@ import DepartDate from './DepartDate'
 import HighSpeed from './HighSpeed'
 import Journey from './Journey'
 import Submit from './Submit'
+import { h0 } from '../common/fp';
 
 import {
     exchangeFromTo,
@@ -15,6 +16,7 @@ import {
     setSelectedCity,
     showDateSelector,
     hideDateSelector,
+setDepartDate,
 } from './actions'
 
 import { bindActionCreators } from 'redux'
@@ -57,6 +59,18 @@ function App(props) {
     const dateSelectorCBS= useMemo(()=>{
         return bindActionCreators({onBack: hideDateSelector}, dispatch)
     }, [dispatch])
+ const onSelectDate = useCallback(day => {
+        if (!day) {
+            return;
+        }
+
+        if (day < h0()) {
+            return;
+        }
+
+        dispatch(setDepartDate(day));
+        dispatch(hideDateSelector());
+    }, [dispatch]);
     return (
         <div>
             <Header title="火车票" onBack={onBack} />
@@ -82,6 +96,7 @@ function App(props) {
             <DateSelector 
                 show={isDateSelectorVisible}
                 {...dateSelectorCBS}
+ onSelect={onSelectDate}
             />
         </div>
     )

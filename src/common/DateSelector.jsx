@@ -22,14 +22,14 @@ function Day(props) {
     const dateString = now === day? '今天': new Date(day).getDate()
 
     return (
-        <td className={classes}>
+        <td className={classnames(classes)} onClick={() => onSelect(day)}>
             {dateString}
         </td>
     )
 }
 
-Day.protoTypes = {
-    day: PropTypes.number.isRequired,
+Day.propTypes = {
+    day: PropTypes.number,
     onSelect: PropTypes.func.isRequired
 }
 
@@ -47,7 +47,7 @@ function Week(props) {
     )
 }
 
-Week.protoTypes = {
+Week.propTypes = {
     days: PropTypes.array.isRequired,
     onSelect: PropTypes.func.isRequired
 }
@@ -58,7 +58,7 @@ function Month(props) {
     const currentDay = new Date(startTimeInMonth)
     let days = []
     while (currentDay.getMonth() === startDay.getMonth()) {
-        days.push(currentDay.getTime)
+        days.push(currentDay.getTime())
         currentDay.setDate(currentDay.getDate() + 1)
     }
     // 补齐
@@ -83,7 +83,7 @@ function Month(props) {
                 </tr>
             </thead>
             <tbody>
-                <tr className='date-table-weeks'>
+                <tr className='data-table-weeks'>
                     <th>周一</th>
                     <th>周二</th>
                     <th>周三</th>
@@ -108,7 +108,7 @@ function Month(props) {
     )
 }
 
-Month.protoTypes = {
+Month.propTypes = {
     startTimeInMonth: PropTypes.number.isRequired,
     onSelect: PropTypes.func.isRequired
 }
@@ -134,24 +134,22 @@ export default function DateSelector(props) {
     return (
         <div className={classnames('date-selector', { hidden: !show })}>
             <Header title="日期选择" onBack={onBack} />
-            <div className='data-selector-tables'>
-                {
-                    monthSequence.map(month => {
-                        return (
-                            <Month
-                                key={month}
-                                onSelect={onSelect}
-                                startTimeInMonth={month}
-                            />
-                        )
-                    })
-                }
+            <div className="date-selector-tables">
+                {monthSequence.map(month => {
+                    return (
+                        <Month
+                            key={month}
+                            onSelect={onSelect}
+                            startTimeInMonth={month}
+                        />
+                    );
+                })}
             </div>
         </div>
     )
 }
 
-DateSelector.protoTypes = {
+DateSelector.propTypes = {
     show: PropTypes.bool.isRequired,
     onSelect: PropTypes.func.isRequired,
     onBack: PropTypes.func.isRequired,
