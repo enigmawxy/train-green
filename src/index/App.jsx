@@ -81,7 +81,7 @@ function App(props) {
     return (
         <div>
             <Header title="火车票" onBack={onBack} />
-            <form className="form">
+            <form action='query.html' className="form">
                 <Journey
                     from={from}
                     to={to}
@@ -91,7 +91,7 @@ function App(props) {
                     time={departDate}
                     {...departDateCbs}
                 />
-                <HighSpeed highSpeed={highSpeed} {...highSpeedCBS}/>
+                <HighSpeed highSpeed={highSpeed} {...highSpeedCBS} />
                 <Submit />
             </form>
             <Selector
