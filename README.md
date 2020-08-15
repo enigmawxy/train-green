@@ -45,3 +45,22 @@
 - 根据页面编写样式文件
 
 - 完善第一步的代码框架
+
+## 特点
+
+- 在主模块中连接Connect, 与Store打交道，主模块的子模块里的数据以及处理都通过子模块的属性从主模块传入，这样的好处是代码代码看起来整洁、规范，子模块只负责渲染。
+
+- 使用Redux的套路，主要有三个文件actions.js, reducers.js, store.js. store.js定义本模块用到的数据结构，通过Provider挂接到主模块上，实现绑定：
+
+```javascript
+import store from './store'
+
+ReactDOM.render(
+    <Provider store = {store}>
+        <App/>
+    </Provider>,
+    document.getElementById('root')
+)
+```
+
+- 操作数据结构中的数据，主要由actions.js和reducers.js来完成，actions.js主要是定义操作数据的函数，reducer数据结构中各数据的返回。
