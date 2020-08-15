@@ -36,6 +36,7 @@ import {
     setArriveTimeStart,
     setArriveTimeEnd,
 } from './actions'
+import useNav from '../common/useNav';
 
 function App(props) {
     const { 
@@ -76,6 +77,13 @@ function App(props) {
     const onBack = useCallback(() => {
         window.history.back()
     }, [])
+
+    const { isPrevDisabled, isNextDisabled, prev, next } = useNav(
+        departDate,
+        dispatch,
+        prevDate,
+        nextDate
+    );
 
     useEffect(() => {
         if (!searchParsed) {
@@ -159,7 +167,13 @@ function App(props) {
             <div className="header-wrapper">
                 <Header title={`${from} ⇀ ${to}`} onBack={onBack} />
             </div>
-            <Nav />
+            <Nav
+                date={departDate}
+                isPrevDisabled={isPrevDisabled}
+                isNextDisabled={isNextDisabled}
+                prev={prev}
+                next={next}
+            />
             <List />
             <Bottom />
         </div>
