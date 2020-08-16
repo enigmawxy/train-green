@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useEffect, useMemo, useCallback } from 'react'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux';
 import './App.css'
 import Header from '../common/Header'
 import { h0 } from '../common/fp'
@@ -8,8 +9,6 @@ import List from './List'
 import Bottom from './Bottom'
 import URI from 'urijs'
 import dayjs from 'dayjs'
-import { useCallback } from 'react'
-import { useEffect } from 'react'
 import {
     setFrom,
     setTo,
@@ -161,6 +160,26 @@ function App(props) {
         arriveTimeEnd,
     ])
     
+    const bottomCbs = useMemo(() => {
+        return bindActionCreators(
+            {
+                toggleOrderType,
+                toggleHighSpeed,
+                toggleOnlyTickets,
+                toggleIsFiltersVisible,
+                setCheckedTicketTypes,
+                setCheckedTrainTypes,
+                setCheckedDepartStations,
+                setCheckedArriveStations,
+                setDepartTimeStart,
+                setDepartTimeEnd,
+                setArriveTimeStart,
+                setArriveTimeEnd,
+            },
+            dispatch
+        );
+    }, [dispatch]);
+
     if(!searchParsed) return null;
 
     return (
@@ -176,7 +195,25 @@ function App(props) {
                 next={next}
             />
             <List list={trainList} />
-            <Bottom />
+            <Bottom
+                highSpeed={highSpeed}
+                orderType={orderType}
+                onlyTickets={onlyTickets}
+                isFiltersVisible={isFiltersVisible}
+                ticketTypes={ticketTypes}
+                trainTypes={trainTypes}
+                departStations={departStations}
+                arriveStations={arriveStations}
+                checkedTicketTypes={checkedTicketTypes}
+                checkedTrainTypes={checkedTrainTypes}
+                checkedDepartStations={checkedDepartStations}
+                checkedArriveStations={checkedArriveStations}
+                departTimeStart={departTimeStart}
+                departTimeEnd={departTimeEnd}
+                arriveTimeStart={arriveTimeStart}
+                arriveTimeEnd={arriveTimeEnd}
+                {...bottomCbs}
+            />
         </div>
     )
 }
